@@ -7,5 +7,5 @@ import (
 
 func main() {
 	body := os.Args[1]
-	fmt.Printf("input body = %s\n", body)
+	fmt.Print(body)
 }
