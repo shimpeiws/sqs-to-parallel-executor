@@ -6,13 +6,23 @@ import (
 	"os/exec"
 	"strconv"
 	"time"
+
+	"github.com/shimpeiws/sqs-to-parallel-executor/sqs"
 )
 
 func mainLoop(number int) {
 	for {
 		fmt.Printf(" mainLoop number = %d\n", number)
-		cmd := exec.Command(os.Args[1], os.Args[2:]...)
-		err := cmd.Run()
+		body, err := sqs.ReceiveMessage(os.Getenv("QUEUE_URL"))
+		if err != nil {
+			panic(err)
+		}
+
+		position := 2
+		args := append(os.Args[:position+1], os.Args[position:]...)
+		args[position] = body
+		cmd := exec.Command(args[1], args[2:]...)
+		err = cmd.Run()
 		if err != nil {
 			panic(err)
 		}
@@ -35,6 +45,7 @@ func main() {
 	}
 
 	ch := make(chan int, parallelCount)
+	defer close(ch)
 	for i := 0; i < parallelCount; i++ {
 		go mainLoop(i)
 	}
