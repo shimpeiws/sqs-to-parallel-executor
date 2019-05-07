@@ -12,4 +12,4 @@
 *.out
 
 sqs-to-parallel-executor
-./examples/examples
+examples/examples
