@@ -18,9 +18,14 @@ func mainLoop(number int) {
 			panic(err)
 		}
 
-		position := 2
-		args := append(os.Args[:position+1], os.Args[position:]...)
-		args[position] = body
+		var args []string
+		if len(os.Args) < 3 {
+			args = append(os.Args, body)
+		} else {
+			position := 2
+			args = append(os.Args[:position+1], os.Args[position:]...)
+			args[position] = body
+		}
 		cmd := exec.Command(args[1], args[2:]...)
 		err = cmd.Run()
 		if err != nil {

@@ -14,6 +14,7 @@ func client() (*sqs.SQS, error) {
 	sess, err := session.NewSession(&aws.Config{
 		Region:      aws.String(os.Getenv("AWS_REGION")),
 		Credentials: credentials.NewStaticCredentials(os.Getenv("AWS_ACCESS_KEY"), os.Getenv("AWS_ACCESS_SECRET_KEY"), ""),
+		Endpoint:    aws.String(os.Getenv("SQS_ENDPOINT")),
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to init client")
