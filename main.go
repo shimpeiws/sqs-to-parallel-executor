@@ -27,10 +27,11 @@ func mainLoop(number int) {
 			args[position] = body
 		}
 		cmd := exec.Command(args[1], args[2:]...)
-		err = cmd.Run()
+		res, err := cmd.Output()
 		if err != nil {
 			panic(err)
 		}
+		fmt.Printf("response = %s\n", res)
 		state := cmd.ProcessState
 		fmt.Printf("%s\n", state.String())
 		fmt.Printf(" PID %d\n", state.Pid())
