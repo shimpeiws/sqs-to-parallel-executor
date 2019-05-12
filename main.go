@@ -31,6 +31,11 @@ func mainLoop(number int) {
 			panic(err)
 		}
 
+		if len(body) == 0 {
+			time.Sleep(pollingInterval())
+			continue
+		}
+
 		var args []string
 		if len(os.Args) < 3 {
 			args = append(os.Args, body)
