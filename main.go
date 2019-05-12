@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -25,7 +25,7 @@ func pollingInterval() time.Duration {
 
 func mainLoop(number int) {
 	for {
-		fmt.Printf(" mainLoop number = %d\n", number)
+		log.Printf(" mainLoop number = %d\n", number)
 		body, err := sqs.ReceiveMessage(os.Getenv("QUEUE_URL"))
 		if err != nil {
 			panic(err)
@@ -49,12 +49,12 @@ func mainLoop(number int) {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("response = %s\n", res)
+		log.Printf("response = %s\n", res)
 		state := cmd.ProcessState
-		fmt.Printf("%s\n", state.String())
-		fmt.Printf(" PID %d\n", state.Pid())
-		fmt.Printf(" System %v\n", state.SystemTime())
-		fmt.Printf(" User %v\n", state.UserTime())
+		log.Printf("%s\n", state.String())
+		log.Printf(" PID %d\n", state.Pid())
+		log.Printf(" System %v\n", state.SystemTime())
+		log.Printf(" User %v\n", state.UserTime())
 		time.Sleep(pollingInterval())
 	}
 }
