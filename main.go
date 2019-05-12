@@ -10,6 +10,19 @@ import (
 	"github.com/shimpeiws/sqs-to-parallel-executor/sqs"
 )
 
+func pollingInterval() time.Duration {
+	defaultInterval := 1 * time.Second
+	if value, ok := os.LookupEnv("POLLING_INTERVAL_SECONDS"); ok {
+		var intervalSecond int64
+		intervalSecond, err := strconv.ParseInt(value, 10, 64)
+		if err != nil {
+			return defaultInterval
+		}
+		return time.Duration(intervalSecond) * time.Second
+	}
+	return defaultInterval
+}
+
 func mainLoop(number int) {
 	for {
 		fmt.Printf(" mainLoop number = %d\n", number)
@@ -37,7 +50,7 @@ func mainLoop(number int) {
 		fmt.Printf(" PID %d\n", state.Pid())
 		fmt.Printf(" System %v\n", state.SystemTime())
 		fmt.Printf(" User %v\n", state.UserTime())
-		time.Sleep(1 * time.Second)
+		time.Sleep(pollingInterval())
 	}
 }
 
