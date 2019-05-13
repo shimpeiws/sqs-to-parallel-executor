@@ -28,7 +28,7 @@ func mainLoop(number int) {
 		log.Printf(" mainLoop number = %d\n", number)
 		body, err := sqs.ReceiveMessage(os.Getenv("QUEUE_URL"))
 		if err != nil {
-			panic(err)
+			log.Panic(err)
 		}
 
 		if len(body) == 0 {
@@ -47,14 +47,9 @@ func mainLoop(number int) {
 		cmd := exec.Command(args[1], args[2:]...)
 		res, err := cmd.Output()
 		if err != nil {
-			panic(err)
+			log.Panic(err)
 		}
 		log.Printf("response = %s\n", res)
-		state := cmd.ProcessState
-		log.Printf("%s\n", state.String())
-		log.Printf(" PID %d\n", state.Pid())
-		log.Printf(" System %v\n", state.SystemTime())
-		log.Printf(" User %v\n", state.UserTime())
 		time.Sleep(pollingInterval())
 	}
 }
