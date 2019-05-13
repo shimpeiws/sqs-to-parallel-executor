@@ -2,6 +2,7 @@ package sqs
 
 import (
 	"os"
+	"sync"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -41,6 +42,9 @@ func deleteMessage(queueUrl string, msg *sqs.Message) error {
 }
 
 func ReceiveMessage(queueUrl string) (string, error) {
+	var mu sync.Mutex
+	mu.Lock()
+	defer mu.Unlock()
 	params := &sqs.ReceiveMessageInput{
 		QueueUrl:            aws.String(queueUrl),
 		MaxNumberOfMessages: aws.Int64(1),
