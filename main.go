@@ -47,7 +47,8 @@ func mainLoop(number int) {
 		cmd := exec.Command(args[1], args[2:]...)
 		res, err := cmd.Output()
 		if err != nil {
-			log.Panic(err)
+			log.Printf("Command return error := %s\n", err.Error())
+			log.Printf("res := %s\n", res)
 		}
 		log.Printf("response = %s\n", res)
 		time.Sleep(pollingInterval())
@@ -60,7 +61,7 @@ func main() {
 	}
 	parallelCount, err := strconv.Atoi(os.Getenv("PARALLEL_COUNT"))
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
 	ch := make(chan int, parallelCount)
