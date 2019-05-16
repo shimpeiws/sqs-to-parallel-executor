@@ -60,7 +60,7 @@ func main() {
 	}
 	parallelCount, err := strconv.Atoi(os.Getenv("PARALLEL_COUNT"))
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 
 	ch := make(chan int, parallelCount)
